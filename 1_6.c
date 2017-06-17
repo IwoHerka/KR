@@ -1,9 +1,7 @@
 #include <stdio.h>
 
-
-void
-main()
+void main()
 {
-  // This will always be 0.
-  printf("%d\n", getchar() == EOF);
+        // This will always be 0.
+        printf("%d\n", getchar() == EOF);
 }
