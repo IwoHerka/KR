@@ -4,7 +4,7 @@
  * of input. Make sure your program does something intelligent with very long 
  * lines, and if there are no blanks or tabs before the specified column. 
  * 
- * TODO: Make breaking words more intelligent, e.g. don't allow to break-off
+ * TODO: Make word-breaking  more intelligent, e.g. don't allow to split
  * single letters.
  */
         
@@ -32,9 +32,13 @@ int main()
 void fold(char from[], char to[], int maxlen)
 {
         char c;
-        int i, j, ccount, fpos, skip_ws;
+        int i, j;
+        
+        int ccount,   // Character count.
+            break_at, // Last suitable index for folding. If -1, split a word.
+            skip_ws;  // Whether to skip whitespaces. Set to 1 after newline.
 
-        fpos = -1;
+        break_at = -1;
         i = j = ccount = skip_ws = 0;
         
         while ((c = from[i++]) != '\0') {
@@ -44,8 +48,8 @@ void fold(char from[], char to[], int maxlen)
                 if (++ccount == maxlen) {
                         ccount = 0;
                         
-                        if (fpos >= 0) {
-                                j = fpos;
+                        if (break_at >= 0) {
+                                j = break_at;
                                 to[j++] = '\n';
                         } else {
                                 if (c != ' ')
@@ -62,7 +66,7 @@ void fold(char from[], char to[], int maxlen)
                         }
                 } else {
                         skip_ws = 0;
-                        fpos = c == ' ' ? j : -1;
+                        break_at = c == ' ' ? j : -1;
                         to[j++] = c;
                 }
         }
